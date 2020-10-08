@@ -1,9 +1,8 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
-const mongoURL = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`;
+const { MONGO_URL } = process.env;
 async function connect() {
-	await mongoose.connect(mongoURL, {
+	await mongoose.connect(MONGO_URL, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 		useCreateIndex: true,
