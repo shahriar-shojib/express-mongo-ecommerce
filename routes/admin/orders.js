@@ -4,7 +4,7 @@ const Product = require('../../models/Product');
 const Order = require('../../models/Order');
 const User = require('../../models/User');
 
-router.get('/', async (req, res) => {
+router.get('/', async (_req, res) => {
 	try {
 		const orders = await Order.find({}).exec();
 		if (orders.length === 0) throw new Error('No orders found');

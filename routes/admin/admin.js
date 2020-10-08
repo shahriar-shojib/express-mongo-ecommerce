@@ -11,8 +11,8 @@ router.post('/login', async (req, res) => {
 	const doc = await Admin.findOne({ username }).exec();
 
 	if (await bcrypt.compare(password, doc.password)) {
-		jwt.sign({ id: doc._id }, 'randomString', { expiresIn: 3600 }, (_err, session) => {
-			res.json({ session });
+		jwt.sign({ id: doc._id }, 'randomString', { expiresIn: 3600 }, (_err, token) => {
+			res.json({ success: true, token });
 		});
 	} else {
 		res.status(400);

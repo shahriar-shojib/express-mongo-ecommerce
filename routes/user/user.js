@@ -11,8 +11,8 @@ router.post('/login', async (req, res) => {
 	const doc = await User.findOne({ username }).exec();
 
 	if (await bcrypt.compare(password, doc.password)) {
-		jwt.sign({ id: doc._id }, 'randomString', { expiresIn: 3600 }, (_err, session) => {
-			res.json({ session });
+		jwt.sign({ id: doc._id }, 'randomString', { expiresIn: 3600 }, (_err, token) => {
+			res.json({ success: true, token });
 		});
 	} else {
 		res.status(400);
@@ -30,7 +30,7 @@ router.post('/create', async (req, res) => {
 	try {
 		let doc = await user.save();
 		jwt.sign({ id: doc._id }, 'randomString', { expiresIn: 3600 }, (_err, token) => {
-			res.json({ token });
+			res.json({ success: true, token });
 		});
 	} catch (_e) {
 		res.status(400).json({ success: false, message: 'User with same name already exists!' });
