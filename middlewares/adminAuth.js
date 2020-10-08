@@ -6,7 +6,7 @@ module.exports = async function (req, res, next) {
 	if (!session) {
 		let doc = await Admin.find({}).exec();
 		if (doc.length === 0) {
-			next();
+			return next();
 		} else {
 			return res.status(401).json({ message: 'Auth Error' });
 		}
@@ -18,11 +18,6 @@ module.exports = async function (req, res, next) {
 		next();
 	} catch (e) {
 		console.error('[ERROR]:', e.message);
-		let doc = await Admin.find({}).exec();
-		if (doc.length === 0) {
-			next();
-		} else {
-			res.status(500).json({ message: 'Invalid session' });
-		}
+		res.status(500).json({ message: 'Invalid session' });
 	}
 };
