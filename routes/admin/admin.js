@@ -30,9 +30,7 @@ router.post('/create', adminAuth, async (req, res) => {
 	});
 	try {
 		await admin.save();
-		jwt.sign({ id: doc._id }, 'randomString', { expiresIn: 3600 }, (_err, session) => {
-			res.json({ session });
-		});
+		res.json({ success: true });
 	} catch (_e) {
 		res.status(500).json({ success: false, message: 'User with same name already exists' });
 	}
