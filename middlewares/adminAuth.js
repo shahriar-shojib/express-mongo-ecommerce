@@ -3,7 +3,14 @@ const Admin = require('../models/Admin');
 
 module.exports = async function (req, res, next) {
 	const session = req.header('session');
-	if (!session) return res.status(401).json({ message: 'Auth Error' });
+	if (!session) {
+		let doc = await Admin.find({}).exec();
+		if (doc.length === 0) {
+			next();
+		} else {
+			return res.status(401).json({ message: 'Auth Error' });
+		}
+	}
 
 	try {
 		const decoded = jwt.verify(session, 'randomString');
