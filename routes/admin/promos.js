@@ -7,8 +7,8 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-	const { code, max_uses, expires, description, discount_amount } = req.body;
-	const coupon = new Coupon({ code, max_uses, expires, description, discount_amount });
+	const { code, max_uses, expires, description, discount_percent } = req.body;
+	const coupon = new Coupon({ code, max_uses, expires, description, discount_percent });
 	res.json(await coupon.save());
 });
 router.post('/update/:id', (req, res) => {

@@ -12,7 +12,7 @@ const CouponSchema = new mongoose.Schema({
 		type: Number,
 		default: 0,
 	},
-	discount_amount: Number,
+	discount_percent: Number,
 });
 
 const Coupon = mongoose.model('Coupon', CouponSchema);
