@@ -20,7 +20,7 @@ router.post('/create', async (req, res) => {
 				return null;
 			})
 		);
-		let amount = 0;
+		let amount = total;
 		let promo_code_id;
 
 		if (promo_code) {
