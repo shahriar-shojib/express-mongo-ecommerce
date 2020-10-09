@@ -15,12 +15,13 @@ router.get('/', async (req, res) => {
 
 router.post('/create', async (req, res) => {
 	try {
-		const { name, price, discount_percent, product_image } = req.body;
+		const { name, price, discount_percent, product_image, shipping_charge } = req.body;
 		const doc = new Product({
 			name,
 			price,
 			discount_percent,
 			product_image,
+			shipping_charge,
 		});
 		await doc.save();
 		res.json({ success: true, message: 'product added successfully' });

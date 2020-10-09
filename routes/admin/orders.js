@@ -6,13 +6,18 @@ const User = require('../../models/User');
 
 router.get('/', async (_req, res) => {
 	try {
-		const orders = await Order.find({}).exec();
+		const orders = await Order.find().exec();
 		if (orders.length === 0) throw new Error('No orders found');
 		const ordersWithInfo = await Promise.all(
 			orders.map(async (e) => {
-				const productInfo = await Product.find({ _id: e.product_id }).exec();
-				const { username } = await User.find({ _id: e.user_id }).exec();
-				return { ...e, productInfo, username };
+				let itemsWithDetails = await Promise.all(
+					e.items.map(async (item) => {
+						const productInfo = await Product.findOne({ _id: item.product_id }).exec();
+						return { ...item.toObject(), item_info: { ...productInfo.toObject() } };
+					})
+				);
+				const { username } = await User.findOne({ _id: e.user_id }).exec();
+				return { ...e.toObject(), items: itemsWithDetails, username };
 			})
 		);
 		res.json(ordersWithInfo);
@@ -21,8 +26,9 @@ router.get('/', async (_req, res) => {
 	}
 });
 
-router.post('/update/:id', async (req, res) => {
-	const order = await Order.findByIdAndUpdate({ _id: req.params.id }, { status: req.body.status }).exec();
+router.post('/update', async (req, res) => {
+	const order = await Order.findByIdAndUpdate({ _id: req.body.id }, { status: req.body.status }).exec();
+	console.log(order);
 	res.json(order);
 });
 

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ordersRouter = require('./orders');
 const productsRouter = require('./products');
-const promosRouter = require('./promos');
+const promosRouter = require('./promo');
 const Admin = require('../../models/Admin');
 const bcrypt = require('bcryptjs');
 const adminAuth = require('../../middlewares/adminAuth');
@@ -15,7 +15,7 @@ router.post('/login', async (req, res) => {
 	console.log(doc);
 	if (doc) {
 		if (await bcrypt.compare(password, doc.password)) {
-			jwt.sign({ id: doc._id }, 'randomString', { expiresIn: 3600 }, (_err, token) => {
+			jwt.sign({ id: doc._id }, 'randomString', { expiresIn: '7d' }, (_err, token) => {
 				res.json({ success: true, token });
 			});
 		} else {
